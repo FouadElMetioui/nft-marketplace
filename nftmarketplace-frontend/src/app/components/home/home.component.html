@@ -1,0 +1,101 @@
+<div class='px-12' id="home">
+    <!-- <div class='text-center mb-4'>
+        <h1 class='font-extrabold text-gray-800 text-3xl'>Explore, buy and sell
+            NFTs</h1>
+    </div> -->
+
+    <ng-container *ngIf="collections != null">
+        <!-- New Collections -->
+        <h1 class='font-extrabold text-gray-800 text-2xl mb-4'>New Collections</h1>
+
+        <div class="rounded-xl border w-full my-3">
+            <ul *ngFor="let collection of collections.slice(0, 5);" class="p-3">
+                <li class="rounded-xl hover:bg-gray-50">
+                    <a [routerLink]="['collection', collection.name]" class="flex justify-between items-center w-full">
+                        <div class="flex items-center">
+                            <img *ngIf="retrievedCollectionImages[collection.name] != null"
+                                class="m-3 rounded-xl w-16 h-16 object-cover"
+                                [src]="retrievedCollectionImages[collection.name]" alt="" />
+                            <div *ngIf="retrievedCollectionImages[collection.name] == null"
+                                class="flex justify-center items-center m-3 rounded-xl w-16 h-16 bg-gray-100">
+                                <fa-icon [icon]="faImage" class="text-gray-300" size="1x"></fa-icon>
+                            </div>
+                            <p class="font-bold text-gray-800 text-lg truncate w-64">{{collection.name}}</p>
+                        </div>
+                        <p class="text-gray-500 text-sm self-center"><span
+                                class="font-bold text-gray-800 text-xl">{{floorPrice[collection.name]}}</span> ETH</p>
+                        <p class="text-sm text-gray-500 self-center">Creator fee : 5%</p>
+
+                        <!-- Nfts -->
+                        <ng-container *ngIf="nftsInCollection[collection.name] != null">
+                            <div class="flex">
+                                <a *ngFor="let nft of nftsInCollection[collection.name].slice(0, 4);"
+                                    [routerLink]="['item', nft.name]"
+                                    class="rounded-xl m-3 hover:ring-4 hover:ring-neutral-200">
+                                    <img *ngIf="retrievedNftImages[nft.name] != null"
+                                        class="rounded-xl w-20 h-20 object-cover" [src]="retrievedNftImages[nft.name]"
+                                        alt="" />
+                                    <div *ngIf="retrievedNftImages[nft.name] == null"
+                                        class="flex justify-center items-center rounded-xl w-20 h-20 bg-gray-50">
+                                        <fa-icon [icon]="faImage" class="text-gray-200" size="2x"></fa-icon>
+                                    </div>
+                                </a>
+                            </div>
+                        </ng-container>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </ng-container>
+
+    <!-- Collection Display by Category -->
+    <ng-container *ngIf="notEmptyCategories != null">
+        <ng-container *ngFor="let category of notEmptyCategories">
+            <div class="mt-5">
+                <h1 class='font-extrabold text-gray-800 text-2xl'>{{category.name}}</h1>
+            </div>
+            <!-- Collections -->
+
+            <div class="flex items-center justify-center w-full h-full">
+                <div class="w-full relative flex items-center justify-center">
+
+                    <!-- Left Button -->
+                    <ng-container *ngIf="collections.length > 4">
+                        <button aria-label="slide backward"
+                            class="absolute z-30 left-0 bg-white w-12 h-12 rounded-full shadow-xl -ml-3 focus:outline-none cursor-pointer"
+                            (click)="goPrev(category.name)">
+                            <fa-icon [icon]="faChevronLeft" size="lg"></fa-icon>
+                        </button>
+                    </ng-container>
+
+                    <!-- Slider -->
+                    <div class="w-full h-full mx-auto overflow-x-hidden overflow-y-hidden">
+                        <div id={{category.name}}
+                            class="h-full flex items-center justify-start transition ease-out duration-700">
+                            <!-- Items -->
+                            <ng-container *ngFor="let collection of collections">
+                                <ng-container *ngIf="collection.categoryName == category.name">
+                                    <div class="flex flex-shrink-0 relative w-1/4 py-8">
+                                        <app-collection-card [collection]="collection"
+                                            [retrievedImage]="retrievedCollectionImages[collection.name]"></app-collection-card>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <!-- Right Button -->
+                    <ng-container *ngIf="collections.length > 4">
+                        <button aria-label="slide forward"
+                            class="absolute z-30 right-0 bg-white w-12 h-12 rounded-full shadow-xl -mr-3 focus:outline-none"
+                            (click)="goNext(category.name)">
+                            <fa-icon [icon]="faChevronRight" size="lg"></fa-icon>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+
+<app-footer></app-footer>

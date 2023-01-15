@@ -1,0 +1,96 @@
+<div class="font-bold mt-4 px-80">
+    <div class='mb-4'>
+        <h1 class='text-4xl'>Update {{Collection.name}}</h1>
+    </div>
+    <div class="mb-10">
+        <div class="mb-6">
+            <label class="block text-base text-gray-700" for="user_avatar">Image of your Collection</label>
+            <div class="font-medium text-xs text-gray-500 mb-2.5" id="user_avatar_help">File types supported: JPG,
+                PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB</div>
+
+            <div class="flex items-center justify-center font-normal w-full">
+                <ng-container *ngIf="imagePreviewUrl == null">
+                    <label for="dropzone-file"
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <fa-icon [icon]="faCloudArrowUp" class="mr-4 text-gray-500" size="2x"></fa-icon>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
+                                    to
+                                    upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (Max size: 100
+                                MB)
+                            </p>
+                        </div><input id="dropzone-file" type="file" class="hidden" (change)="onFileChanged($event)" />
+                    </label>
+                </ng-container>
+                <ng-container *ngIf="imagePreviewUrl != null">
+                    <label for="dropzone-file"
+                        class="relative flex flex-col items-center justify-center w-full h-fit border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <img class="rounded-lg w-full aspect-square" [src]="imagePreviewUrl" alt="" />
+                        <p (click)="deleteImage()" class="absolute top-0 right-0 p-3"><fa-icon [icon]="faClose" class="text-gray-300" size="1x"></fa-icon></p>
+                        <input id="dropzone-file" type="file" class="hidden" (change)="onFileChanged($event)" />
+                    </label>
+                </ng-container>
+            </div>
+        </div>
+        <div class="mb-6">
+            <label for="name" class="block mb-2.5 text-base text-gray-700">Name</label>
+            <input type="text" id="name" name="name" [(ngModel)]="Collection.name"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="Collection name" required>
+        </div>
+        <div class="mb-6">
+            <label for="description" class="block text-base text-gray-700">Description</label>
+            <div class="font-medium text-xs text-gray-500 mb-2.5" id="description_help">The description will be
+                included on the collection's detail page underneath its image</div>
+            <input type="text" id="description" name="description" [(ngModel)]="Collection.description"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="Provid a detailed description of your collection" required>
+        </div>
+        <div class="mb-6">
+            <label for="items" class="block text-base text-gray-700">Supply</label>
+            <div class="font-medium text-xs text-gray-500 mb-2.5" id="items_help">The number of items that can be
+                minted. No gas cost to you!</div>
+            <input type="number" id="items" name="items" [(ngModel)]="Collection.items"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                value="1" required>
+        </div>
+        <div class="mb-6">
+            <label for="website" class="block text-base text-gray-700">Website</label>
+            <div class="font-medium text-xs text-gray-500 mb-2.5" id="website_help">Include a link to this URL on this
+                item's detail page, so that users can click to learn more about it.</div>
+            <input type="url" id="website" name="website" [(ngModel)]="Collection.website"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="https://yousite.io/item/123" required>
+        </div>
+        <div class="mb-6">
+            <label for="discord" class="block text-base mb-2.5 text-gray-700">Discord</label>
+            <input type="url" id="discord" name="discord" [(ngModel)]="Collection.discord"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="https://discord.com/channels/yourchannel" required>
+        </div>
+        <div class="mb-6">
+            <label for="twitter" class="block text-base mb-2.5 text-gray-700">Twitter</label>
+            <input type="url" id="twitter" name="twitter" [(ngModel)]="Collection.twitter"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3"
+                placeholder="https://twitter.com/yourusername" required>
+        </div>
+        <div class="mb-6">
+            <label for="category" class="block text-base text-gray-700">Category</label>
+            <div class="font-medium text-xs text-gray-500 mb-2.5" id="category_help">Choose the category that your
+                collection belongs to</div>
+            <select id="category" name="categoryName" [(ngModel)]="Collection.categoryName"
+                class="bg-gray-50 font-normal border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3">
+                <option *ngFor="let category of categories" [ngValue]="category.name">{{category.name}}</option>
+            </select>
+        </div>
+        <div class="flex justify-between">
+            <button (click)="updateCollection()"
+                class="text-white text-base w-full sm:w-auto px-5 py-3.5 text-center rounded-lg bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300">Submit
+                changes</button>
+            <button (click)="deleteCollection()"
+                class="text-blue-500 text-base w-full sm:w-auto px-5 py-3.5 text-center rounded-lg border-2 bg-white hover:shadow focus:ring-4 focus:outline-none focus:ring-blue-300">Delete
+                collection</button>
+        </div>
+    </div>
+</div>

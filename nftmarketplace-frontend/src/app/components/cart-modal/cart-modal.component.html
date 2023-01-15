@@ -1,0 +1,53 @@
+<div id="cart-modal" tabindex="-1" aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+    <div class="relative w-full h-full max-w-md md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-2xl shadow">
+            <button type="button"
+                class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-800 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                data-modal-toggle="cart-modal">
+                <fa-icon [icon]="faXmark" class="w-5 h-5" size="lg"></fa-icon>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <!-- Modal header -->
+            <div class="px-6 py-4 border-b rounded-t">
+                <h3 class="text-base font-bold text-gray-800 lg:text-xl">
+                    Your cart
+                </h3>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 border-b max-h-80 overflow-y-auto">
+                <div class="flex justify-between items-center">
+                    <p class="font-bold text-gray-800">{{totalItems}} Items</p>
+                    <button (click)="clearCart()"
+                        class="text-white text-xs rounded-lg px-4 py-2.5 text-center bg-rose-500 hover:bg-rose-700 focus:ring-4 focus:outline-none focus:ring-rose-300">Clear
+                        all</button>
+                </div>
+                <ul class="my-4">
+                    <li *ngFor="let cart of carts" class="flex justify-between items-center rounded-xl hover:bg-gray-100">
+                        <a [routerLink]="['/item', nfts[cart.id].name]" class="flex items-center w-full">
+                            <img class="p-3 w-20 h-24" [src]="retrievedImages[nfts[cart.id].name]" alt=""/>
+                            <div class="flex flex-col items-start mx-4">
+                                <p class="font-bold text-gray-800">{{nfts[cart.id].name}}</p>
+                                <p class="text-gray-800">{{nfts[cart.id].price}} ETH</p>
+                                <p class="text-sm text-gray-500">Creator fee : 5%</p>
+                            </div>
+                        </a>
+                        <a (click)="removeItemFromCart(cart)" class="cursor-pointer">
+                            <fa-icon [icon]="faTrash" class="text-gray-700 hover:text-gray-500 w-5 h-5 p-3"
+                                size="lg"></fa-icon>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-6 font-bold">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-gray-800">Total price</p>
+                    <p class="text-gray-800">{{totalPrice}} ETH</p>
+                </div>
+                <button type="submit"
+                    class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-base w-full px-5 py-3.5 text-center">Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
